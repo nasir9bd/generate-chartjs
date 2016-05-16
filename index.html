@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Chartjs Generator</title>
+
+  <link href="assets/css/semantic.css" rel="stylesheet" type="text/css" />
+  <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+    
+    <div class="ui container">
+        <div id="app">
+            <chart :chartdata="chartData"></chart>
+        </div>
+    </div>
+    {{chartData | json}}
+    <template id="chart-parent">
+        <div class="ui" style="width:600px">
+            <canvas height="400" width="600" id="graph"></canvas>
+        </div>
+        
+        <div class="ui form">
+            <div class="inline fields">
+                <div class="thirteen wide field">
+
+                </div>
+                <div class="two wide field">
+                    <label>Chart Type</label>
+                    <select class="ui dropdown" v-model="chartdata.type">
+                        <option value="pie">Pie</option>
+                        <option value="bar">Bar</option>
+                    </select>
+                </div>
+                <div class="one wide field">
+                    <button class="ui primary button" @click="drawChart">Draw</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ui form">
+            <h4 class="ui dividing header"><i class="tag icon"></i>Labels</h4>
+            <div class="fields">
+                <div class="ui icon input field" v-for="label in chartdata.data.labels" track-by="$index">
+                    <input type="text" v-model="label" placeholder="label">
+                    <i class="delete link icon" @click="removeLabel(label)"></i>
+                </div>
+                <div class="field">
+                    <button class="ui button" @click="addLabel">Add</button>
+                </div>
+            </div>
+        </div>
+            
+        <h4 class="ui horizontal divider header"><i class="database icon"></i>Datasets</h4>
+        
+        <div class="ui form">
+            <div class="inline field">
+                <dataset class="inline field" v-for="dataset in chartdata.data.datasets" :dataset.sync="dataset" track-by="$index"></dataset>
+
+                <button class="ui button" @click="addDataset">+dataset</button>
+                <br>
+            </div>
+        </div>
+    </template>
+    
+    <template id="datasets">
+        <div class="inline field">
+            <label>Label</label><input v-model="dataset.label" type="text">
+            <label>Bacground Color</label><input v-model="dataset.backgroundColor" type="color">
+            <span @click="removeDataset(dataset)"><i class="remove icon"></i><span>
+        </div>
+
+        <div style="display:inline-block" class="inline field" v-for="data in dataset.data" track-by="$index">
+            <input v-model="data" type="text">
+            <span style="cursor:pointer" @click="removeData(dataset, data)"><i class="remove icon"></i></i></span>
+        </div>
+        <button class="ui button" @click="addData(dataset)">+data</button>
+    </template>
+    
+    <script src="assets/js/jquery-1.12.3.js"></script>
+    <script src="assets/js/chart.min.js"></script>
+    <script src="assets/js/semantic.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/script.js"></script>      
+</body>
+</html>

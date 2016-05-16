@@ -1,0 +1,16 @@
+body, .ui.vertical.divider {
+  color: #696969;
+}
+
+.ui.vertical.divider {
+  margin: 0 4px;
+}
+
+.ui.raised.segment {
+  background-color: #fffacd;
+  width: 600px;
+  margin-top: 0;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+}
