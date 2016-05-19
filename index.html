@@ -23,7 +23,7 @@
         
         <div class="ui form">
             <div class="inline fields">
-                <div class="thirteen wide field">
+                <div class="twelve wide field">
 
                 </div>
                 <div class="two wide field">
@@ -33,21 +33,22 @@
                         <option value="bar">Bar</option>
                     </select>
                 </div>
-                <div class="one wide field">
-                    <button class="ui primary button" @click="drawChart">Draw</button>
+                <div class="two wide field">
+                    <button class="ui primary button" @click="drawChart"><i class="paint brush icon"></i>Draw</button>
                 </div>
             </div>
         </div>
         
+        <h4 class="ui horizontal divider header"><i class="tag icon"></i>Labels</h4>
+        
         <div class="ui form">
-            <h4 class="ui dividing header"><i class="tag icon"></i>Labels</h4>
             <div class="fields">
                 <div class="ui icon input field" v-for="label in chartdata.data.labels" track-by="$index">
                     <input type="text" v-model="label" placeholder="label">
                     <i class="delete link icon" @click="removeLabel(label)"></i>
                 </div>
                 <div class="field">
-                    <button class="ui button" @click="addLabel">Add</button>
+                    <button class="ui button" @click="addLabel"><i class="tag icon"></i>Add</button>
                 </div>
             </div>
         </div>
@@ -58,10 +59,101 @@
             <div class="inline field">
                 <dataset class="inline field" v-for="dataset in chartdata.data.datasets" :dataset.sync="dataset" track-by="$index"></dataset>
 
-                <button class="ui button" @click="addDataset">+dataset</button>
+                <button class="ui button" @click="addDataset"><i class="database icon"></i>Add</button>
                 <br>
             </div>
         </div>
+        
+        <h4 class="ui horizontal divider header"><i class="settings icon"></i>Options</h4>
+        
+        <div class="ui top attached tabular menu">
+            <a class="item active" data-tab="defaults">Defaults</a>
+            <a class="item" data-tab="title">Title</a>
+            <a class="item" data-tab="legend">Legend</a>
+            <a class="item" data-tab="tooltips">Tooltips</a>
+            <a class="item" data-tab="animation">Animation</a>
+            <a class="item" data-tab="elements">Elements</a>
+        </div>
+        <div class="ui bottom attached tab segment active" data-tab="defaults">
+            <div class="ui top attached tabular menu">
+                <a class="active item" data-tab="defaults/responsive">Responsive</a>
+                <a class="item" data-tab="defaults/hover">Hover</a>
+                <a class="item" data-tab="defaults/onclick">onClick</a>
+                <a class="item" data-tab="defaults/font">Font</a>
+                <a class="item" data-tab="defaults/legend">Legend</a>
+            </div>
+            <div class="ui bottom attached active tab segment" data-tab="defaults/responsive">
+                Responsive
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="defaults/hover">
+                Hover
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="defaults/onclick">
+                onClick
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="defaults/font">
+                Font
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="defaults/legend">
+                Legend
+            </div>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="title">
+            Title
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="legend">
+            <div class="ui top attached tabular menu">
+                <a class="active item" data-tab="legend/display">Display</a>
+                <a class="item" data-tab="legend/onclick">onClick</a>
+                <a class="item" data-tab="legend/labels">Labels</a>
+            </div>
+            <div class="ui bottom attached active tab segment" data-tab="legend/display">
+                Display
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="legend/onclick">
+                onClick
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="legend/labels">
+                Labels
+            </div>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="tooltips">
+            <div class="ui top attached tabular menu">
+                <a class="active item" data-tab="tooltips/general">General</a>
+                <a class="item" data-tab="tooltips/callback">Callback</a>
+            </div>
+            <div class="ui bottom attached active tab segment" data-tab="tooltips/general">
+                General
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="tooltips/callback">
+                Callback
+            </div>
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="animation">
+            Animation
+        </div>
+        <div class="ui bottom attached tab segment" data-tab="elements">
+            <div class="ui top attached tabular menu">
+                <a class="active item" data-tab="elements/arc">Arc</a>
+                <a class="item" data-tab="elements/line">Line</a>
+                <a class="item" data-tab="elements/point">Point</a>
+                <a class="item" data-tab="elements/rectangle">Rectangle</a>
+            </div>
+            <div class="ui bottom attached active tab segment" data-tab="elements/arc">
+                Arc
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="elements/line">
+                Line
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="elements/point">
+                Point
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="elements/rectangle">
+                Rectangle
+            </div>
+        </div>
+        
+        
     </template>
     
     <template id="datasets">

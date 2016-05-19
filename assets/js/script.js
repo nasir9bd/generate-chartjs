@@ -85,3 +85,5 @@ window.vm = new Vue({
     options: {}
   }
 });
+
+$('.menu .item').tab();
