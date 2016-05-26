@@ -1,3 +1,27 @@
+var type, data, options;
+
+type = JSON.parse(localStorage.getItem('type')) || 'bar';
+
+data = JSON.parse(localStorage.getItem('data')) || {
+        labels: [],
+        datasets: []
+    };
+
+options = JSON.parse(localStorage.getItem('options')) || {
+        title:{
+            display: false
+        },
+        legend: {
+            display: true
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    };
 
 Vue.component('dataset', {
     template: '#datasets',
@@ -11,7 +35,7 @@ Vue.component('dataset', {
         },
         removeDataset: function (dataset) {
             vm.chartData.data.datasets.$remove(dataset);
-        },
+        }
     }
 });
 
@@ -23,6 +47,7 @@ Vue.component('chart', {
             this.chartdata.data.datasets.push({
                 label: '',
                 backgroundColor: '',
+                fill: true,
                 data: []
             });
         },
@@ -33,6 +58,13 @@ Vue.component('chart', {
             this.chartdata.data.labels.push('');
         },
         drawChart: function () {
+
+            localStorage.setItem("type", JSON.stringify(this.chartdata.type));
+            localStorage.setItem("data", JSON.stringify(this.chartdata.data));
+            localStorage.setItem("options", JSON.stringify(this.chartdata.options));
+
+            //context.clearRect(0, 0, canvas.width, canvas.height);
+
             var ctx = document.getElementById("graph");
         
             var myChart = new Chart(ctx, {
@@ -41,15 +73,7 @@ Vue.component('chart', {
                     labels: this.chartdata.data.labels,
                     datasets: cloneObject(this.chartdata.data.datasets)
                 },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
-                    }
-                }
+                options: cloneObject(this.chartdata.options)
             });
             
             function cloneObject (obj) {
@@ -65,6 +89,9 @@ Vue.component('chart', {
             }
         }
     },
+    ready: function() {
+        this.drawChart();
+    },
     watch: {
         'chartdata.type': function(val) {
             this.chartdata.type = val;
@@ -75,15 +102,13 @@ Vue.component('chart', {
 window.vm = new Vue({
     el: 'body',
     data: {
-    chartData : {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: []
-        }
-    },
-    options: {}
-  }
+        chartData : {
+            type: type,
+            data: data,
+            options: options
+        },
+
+    }
 });
 
 $('.menu .item').tab();
