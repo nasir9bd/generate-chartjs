@@ -63,10 +63,12 @@ Vue.component('chart', {
             localStorage.setItem("data", JSON.stringify(this.chartdata.data));
             localStorage.setItem("options", JSON.stringify(this.chartdata.options));
 
-            //context.clearRect(0, 0, canvas.width, canvas.height);
+            //var ctx = document.getElementById("graph");
+            var canvas = document.querySelector('#graph');
+            var ctx = canvas.getContext('2d');
 
-            var ctx = document.getElementById("graph");
-        
+            //celarCanvas(canvas, ctx);
+
             var myChart = new Chart(ctx, {
                 type: this.chartdata.type,
                 data: {
@@ -86,6 +88,50 @@ Vue.component('chart', {
                         clone[i] = obj[i];
                     }
                 return clone;
+            }
+
+            function celarCanvas() {
+
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                ctx.beginPath(); //
+                ctx.rect(50, 50, 100, 100);
+                ctx.stroke();
+                ctx.closePath();
+
+                ctx.beginPath(); //
+                ctx.moveTo(350, 50);
+                ctx.lineTo(400, 100);
+                ctx.stroke();
+                ctx.closePath();
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.beginPath(); //
+                ctx.rect(100, 100, 100, 100);
+                ctx.stroke();
+                ctx.closePath();
+
+                ctx.beginPath(); //
+                ctx.moveTo(450, 50);
+                ctx.lineTo(500, 100);
+                ctx.stroke();
+                ctx.closePath();
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.beginPath(); //
+                ctx.rect(150, 150, 100, 100);
+                ctx.stroke();
+                ctx.closePath();
+
+                ctx.beginPath(); //
+                ctx.moveTo(550, 50);
+                ctx.lineTo(600, 100);
+                ctx.stroke();
+                ctx.closePath();
+
             }
         }
     },
@@ -112,3 +158,4 @@ window.vm = new Vue({
 });
 
 $('.menu .item').tab();
+$('.ui.accordion').accordion();
