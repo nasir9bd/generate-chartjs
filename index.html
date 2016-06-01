@@ -11,25 +11,16 @@
     </style>
 </head>
 <body>
-    
+
     <div class="ui container">
-        <div id="app">
-            <chart :chartdata="chartData"></chart>
-        </div>
+        <graph :chartdata="chartData"></graph>
     </div>
-    <!--{{chartData | json}}-->
+{{chartData | json}}
 
-    <div class="ui container" style="margin-top: 20px;">
-        <footer>
-                &copy; 2016 nasir9bd
-        </footer>
-    </div>
+    <template id="parent-template">
+        <canvas width="600" height="400" v-el:graph></canvas>
 
-    <template id="chart-parent">
-        <div style="width:600px">
-            <canvas height="400" width="600" id="graph"></canvas>
-        </div>
-        
+
         <div class="ui form">
             <div class="inline fields">
                 <div class="twelve wide field">
@@ -925,10 +916,11 @@
             </div>
         </div>
     </template>
-    
+
     <template id="datasets">
         <div class="ui segment">
-            <div class="fields">
+            <div class="ui form">
+                <div class="fields">
                 <div class="field">
                     <label>Category</label>
                     <input v-model="dataset.label" type="text">
@@ -942,12 +934,28 @@
                     <input v-model="dataset.borderColor" type="color">
                 </div>
                 <div class="field">
+                    <label>Border Width</label>
+                    <select class="ui dropdown" v-model="dataset.borderWidth">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="field">
                     <label>Fill</label>
                     <input type="checkbox" v-model="dataset.fill">
                 </div>
                 <div class="field">
                     <span @click="removeDataset(dataset)"><i class="remove icon"></i></span>
                 </div>
+            </div>
             </div>
             <div class="fields">
                 <div class="ui icon input field" v-for="data in dataset.data" track-by="$index">
@@ -960,11 +968,11 @@
             </div>
         </div>
     </template>
-    
+
     <script src="assets/js/jquery-1.12.3.js"></script>
     <script src="assets/js/chart.min.js"></script>
     <script src="assets/js/semantic.js"></script>
     <script src="assets/js/vue.js"></script>
-    <script src="assets/js/script.js"></script>      
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

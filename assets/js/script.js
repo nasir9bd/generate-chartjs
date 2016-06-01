@@ -73,9 +73,9 @@ Vue.component('chart', {
                 type: this.chartdata.type,
                 data: {
                     labels: this.chartdata.data.labels,
-                    datasets: cloneObject(this.chartdata.data.datasets)
+                    datasets: jQuery.extend(true, {}, this.chartdata.data.datasets)
                 },
-                options: cloneObject(this.chartdata.options)
+                options: this.chartdata.options
             });
             
             function cloneObject (obj) {
