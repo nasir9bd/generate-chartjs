@@ -26,8 +26,17 @@ options = JSON.parse(localStorage.getItem('options')) || {
 Vue.component('graph', {
     template: '#parent-template',
     props: ['chartdata'],
+    data: function() {
+      return {
+          myChart: null
+      }
+    },
     methods: {
         drawChart: function() {
+
+            if( this.myChart!= null ) {
+                this.myChart.destroy();
+            }
 
             localStorage.setItem("type", JSON.stringify(this.chartdata.type));
             localStorage.setItem("data", JSON.stringify(this.chartdata.data));
@@ -43,7 +52,7 @@ Vue.component('graph', {
 
             var ctx = this.$els.graph.getContext('2d');
 
-            var myChart = new Chart(ctx, {
+            this.myChart = new Chart(ctx, {
                 type: type,
                 data:  jQuery.extend(true, {}, data),
                 options: this.chartdata.options
@@ -66,12 +75,13 @@ Vue.component('graph', {
     },
     ready: function() {
         this.drawChart();
+        $('.menu .item').tab();
     }
 });
 
 Vue.component('dataset', {
     template: '#datasets',
-    props: ['dataset'],
+    props: ['dataset', 'index'],
     methods: {
         addData: function (dataset){
             dataset.data.push('');
@@ -82,6 +92,10 @@ Vue.component('dataset', {
         removeDataset: function (dataset) {
             vm.chartData.data.datasets.$remove(dataset);
         }
+    },
+    ready: function() {
+        //$('.menu .item').tab();
+        $(this.$el).find('.menu .item').tab();
     }
 });
 
@@ -98,6 +112,5 @@ var vm = new Vue({
 
 });
 
-$('.menu .item').tab();
 $('.ui.accordion').accordion();
 

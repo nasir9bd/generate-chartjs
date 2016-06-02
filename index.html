@@ -15,10 +15,14 @@
 <div class="ui container">
     <graph :chartdata="chartData"></graph>
 </div>
-{{chartData | json}}
+<!--{{chartData | json}}-->
 
 <template id="parent-template">
-    <canvas width="600" height="400" v-el:graph></canvas>
+    <div>
+        <div style="width:900px;margin:0 auto">
+            <canvas width="600" height="400" v-el:graph></canvas>
+        </div>
+    </div>
 
 
     <div class="ui form">
@@ -29,9 +33,12 @@
             <div class="two wide field">
                 <label>Chart Type</label>
                 <select class="ui dropdown" v-model="chartdata.type">
-                    <option value="pie">Pie</option>
                     <option value="bar">Bar</option>
                     <option value="line">Line</option>
+                    <option value="radar">Radar</option>
+                    <option value="polarArea">Polar Area</option>
+                    <option value="pie">Pie</option>
+                    <option value="doughnut">Doughnut</option>
                 </select>
             </div>
             <div class="two wide field">
@@ -50,7 +57,7 @@
             <div class="ui form">
                 <div class="fields">
                     <div class="ui icon input field" v-for="label in chartdata.data.labels" track-by="$index">
-                        <input type="text" v-model="label" placeholder="label">
+                        <input type="text" v-model="label" placeholder="label" @keyup.enter="addLabel">
                         <i class="delete link icon" @click="removeLabel(label)"></i>
                     </div>
                     <div class="field">
@@ -65,7 +72,7 @@
         </div>
         <div class="content">
             <div class="ui form">
-                <dataset v-for="dataset in chartdata.data.datasets" :dataset.sync="dataset" track-by="$index"></dataset>
+                <dataset v-for="dataset in chartdata.data.datasets" :index="$index" :dataset.sync="dataset" track-by="$index"></dataset>
 
                 <button class="ui button" @click="addDataset"><i class="database icon"></i>Add</button>
                 <br>
@@ -1539,7 +1546,18 @@
                                     </div>
                                     <div class="field">
                                         <label>Line Width</label>
-                                        <input type="text" v-model="chartdata.options.scales.xAxes[0].gridLines.lineWidth">
+                                        <select class="ui dropdown" v-model="chartdata.options.scales.xAxes[0].gridLines.lineWidth" number>
+                                            <option value="1">1px</option>
+                                            <option value="2">2px</option>
+                                            <option value="3">3px</option>
+                                            <option value="4">4px</option>
+                                            <option value="5">5px</option>
+                                            <option value="6">6px</option>
+                                            <option value="7">7px</option>
+                                            <option value="8">8px</option>
+                                            <option value="9">9px</option>
+                                            <option value="10">10px</option>
+                                        </select>
                                     </div>
                                     <div class="field">
                                         <label>Draw On Chart Area</label>
@@ -1549,13 +1567,74 @@
                                         <label>Draw Ticks</label>
                                         <input type="checkbox" v-model="chartdata.options.scales.xAxes[0].gridLines.drawTicks">
                                     </div>
-                                    <!--<div class="field">-->
-                                    <!--<label>Tick Mark Length</label>-->
-                                    <!--<input type="text" v-model="chartdata.options.scales.xAxes[0].gridLines.tickMarkLength">-->
-                                    <!--</div>-->
+                                    <div class="field">
+                                    <label>Tick Mark Length</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.xAxes[0].gridLines.tickMarkLength" number>
+                                        <option value="1">1px</option>
+                                        <option value="2">2px</option>
+                                        <option value="3">3px</option>
+                                        <option value="4">4px</option>
+                                        <option value="5">5px</option>
+                                        <option value="6">6px</option>
+                                        <option value="7">7px</option>
+                                        <option value="8">8px</option>
+                                        <option value="9">9px</option>
+                                        <option value="10">10px</option>
+                                        <option value="11">11px</option>
+                                        <option value="12">12px</option>
+                                        <option value="13">13px</option>
+                                        <option value="14">14px</option>
+                                        <option value="15">15px</option>
+                                        <option value="16">16px</option>
+                                        <option value="17">17px</option>
+                                        <option value="18">18px</option>
+                                        <option value="19">19px</option>
+                                        <option value="20">20px</option>
+                                        <option value="21">22px</option>
+                                        <option value="23">23px</option>
+                                        <option value="24">24px</option>
+                                        <option value="25">25px</option>
+                                        <option value="26">26px</option>
+                                        <option value="27">27px</option>
+                                        <option value="28">28px</option>
+                                        <option value="29">29px</option>
+                                        <option value="30">30px</option>
+                                        <option value="31">31px</option>
+                                        <option value="32">32px</option>
+                                        <option value="33">33px</option>
+                                        <option value="34">34px</option>
+                                        <option value="35">35px</option>
+                                        <option value="36">36px</option>
+                                        <option value="37">37px</option>
+                                        <option value="38">38px</option>
+                                        <option value="39">39px</option>
+                                        <option value="40">40px</option>
+                                        <option value="41">41px</option>
+                                        <option value="42">42px</option>
+                                        <option value="43">43px</option>
+                                        <option value="44">44px</option>
+                                        <option value="45">45px</option>
+                                        <option value="46">46px</option>
+                                        <option value="47">47px</option>
+                                        <option value="48">48px</option>
+                                        <option value="49">49px</option>
+                                        <option value="50">50px</option>
+                                    </select>
+                                    </div>
                                     <div class="field">
                                         <label>Zero Line Width</label>
-                                        <input type="text" v-model="chartdata.options.scales.xAxes[0].gridLines.zeroLineWidth">
+                                        <select class="ui dropdown" v-model="chartdata.options.scales.xAxes[0].gridLines.zeroLineWidth" number>
+                                            <option value="1">1px</option>
+                                            <option value="2">2px</option>
+                                            <option value="3">3px</option>
+                                            <option value="4">4px</option>
+                                            <option value="5">5px</option>
+                                            <option value="6">6px</option>
+                                            <option value="7">7px</option>
+                                            <option value="8">8px</option>
+                                            <option value="9">9px</option>
+                                            <option value="10">10px</option>
+                                        </select>
                                     </div>
                                     <div class="field">
                                         <label>Zero Line Color</label>
@@ -1589,7 +1668,57 @@
                                     </div>
                                     <div class="field">
                                         <label>Font Size</label>
-                                        <input type="text" v-model="chartdata.options.scales.xAxes[0].scaleLabel.fontSize">
+                                        <select class="ui dropdown" v-model="chartdata.options.scales.xAxes[0].scaleLabel.fontSize" number>
+                                            <option value="1">1px</option>
+                                            <option value="2">2px</option>
+                                            <option value="3">3px</option>
+                                            <option value="4">4px</option>
+                                            <option value="5">5px</option>
+                                            <option value="6">6px</option>
+                                            <option value="7">7px</option>
+                                            <option value="8">8px</option>
+                                            <option value="9">9px</option>
+                                            <option value="10">10px</option>
+                                            <option value="11">11px</option>
+                                            <option value="12">12px</option>
+                                            <option value="13">13px</option>
+                                            <option value="14">14px</option>
+                                            <option value="15">15px</option>
+                                            <option value="16">16px</option>
+                                            <option value="17">17px</option>
+                                            <option value="18">18px</option>
+                                            <option value="19">19px</option>
+                                            <option value="20">20px</option>
+                                            <option value="21">22px</option>
+                                            <option value="23">23px</option>
+                                            <option value="24">24px</option>
+                                            <option value="25">25px</option>
+                                            <option value="26">26px</option>
+                                            <option value="27">27px</option>
+                                            <option value="28">28px</option>
+                                            <option value="29">29px</option>
+                                            <option value="30">30px</option>
+                                            <option value="31">31px</option>
+                                            <option value="32">32px</option>
+                                            <option value="33">33px</option>
+                                            <option value="34">34px</option>
+                                            <option value="35">35px</option>
+                                            <option value="36">36px</option>
+                                            <option value="37">37px</option>
+                                            <option value="38">38px</option>
+                                            <option value="39">39px</option>
+                                            <option value="40">40px</option>
+                                            <option value="41">41px</option>
+                                            <option value="42">42px</option>
+                                            <option value="43">43px</option>
+                                            <option value="44">44px</option>
+                                            <option value="45">45px</option>
+                                            <option value="46">46px</option>
+                                            <option value="47">47px</option>
+                                            <option value="48">48px</option>
+                                            <option value="49">49px</option>
+                                            <option value="50">50px</option>
+                                        </select>
                                     </div>
                                     <div class="field">
                                         <label>Font Style</label>
@@ -1621,11 +1750,61 @@
                                     </div>
                                     <div class="field">
                                         <label>Font Family</label>
-                                        <input type="text" v-model="chartdata.options.scales.xAxes[0].ticks.fontFamily">
+                                        <input type="text" value="Helvetica Neue" v-model="chartdata.options.scales.xAxes[0].ticks.fontFamily">
                                     </div>
                                     <div class="field">
                                         <label>Font Size</label>
-                                        <input type="number" v-model="chartdata.options.scales.xAxes[0].ticks.fontSize">
+                                        <select class="ui dropdown" v-model="chartdata.options.scales.xAxes[0].ticks.fontSize" number>
+                                            <option value="1">1px</option>
+                                            <option value="2">2px</option>
+                                            <option value="3">3px</option>
+                                            <option value="4">4px</option>
+                                            <option value="5">5px</option>
+                                            <option value="6">6px</option>
+                                            <option value="7">7px</option>
+                                            <option value="8">8px</option>
+                                            <option value="9">9px</option>
+                                            <option value="10">10px</option>
+                                            <option value="11">11px</option>
+                                            <option value="12">12px</option>
+                                            <option value="13">13px</option>
+                                            <option value="14">14px</option>
+                                            <option value="15">15px</option>
+                                            <option value="16">16px</option>
+                                            <option value="17">17px</option>
+                                            <option value="18">18px</option>
+                                            <option value="19">19px</option>
+                                            <option value="20">20px</option>
+                                            <option value="21">22px</option>
+                                            <option value="23">23px</option>
+                                            <option value="24">24px</option>
+                                            <option value="25">25px</option>
+                                            <option value="26">26px</option>
+                                            <option value="27">27px</option>
+                                            <option value="28">28px</option>
+                                            <option value="29">29px</option>
+                                            <option value="30">30px</option>
+                                            <option value="31">31px</option>
+                                            <option value="32">32px</option>
+                                            <option value="33">33px</option>
+                                            <option value="34">34px</option>
+                                            <option value="35">35px</option>
+                                            <option value="36">36px</option>
+                                            <option value="37">37px</option>
+                                            <option value="38">38px</option>
+                                            <option value="39">39px</option>
+                                            <option value="40">40px</option>
+                                            <option value="41">41px</option>
+                                            <option value="42">42px</option>
+                                            <option value="43">43px</option>
+                                            <option value="44">44px</option>
+                                            <option value="45">45px</option>
+                                            <option value="46">46px</option>
+                                            <option value="47">47px</option>
+                                            <option value="48">48px</option>
+                                            <option value="49">49px</option>
+                                            <option value="50">50px</option>
+                                        </select>
                                     </div>
                                     <div class="field">
                                         <label>Font Style</label>
@@ -1651,7 +1830,57 @@
                                     </div>
                                     <div class="field">
                                         <label>Padding</label>
-                                        <input type="number" v-model="chartdata.options.scales.xAxes[0].ticks.padding">
+                                        <select class="ui dropdown" v-model="chartdata.options.scales.xAxes[0].ticks.padding" number>
+                                            <option value="1">1px</option>
+                                            <option value="2">2px</option>
+                                            <option value="3">3px</option>
+                                            <option value="4">4px</option>
+                                            <option value="5">5px</option>
+                                            <option value="6">6px</option>
+                                            <option value="7">7px</option>
+                                            <option value="8">8px</option>
+                                            <option value="9">9px</option>
+                                            <option value="10">10px</option>
+                                            <option value="11">11px</option>
+                                            <option value="12">12px</option>
+                                            <option value="13">13px</option>
+                                            <option value="14">14px</option>
+                                            <option value="15">15px</option>
+                                            <option value="16">16px</option>
+                                            <option value="17">17px</option>
+                                            <option value="18">18px</option>
+                                            <option value="19">19px</option>
+                                            <option value="20">20px</option>
+                                            <option value="21">22px</option>
+                                            <option value="23">23px</option>
+                                            <option value="24">24px</option>
+                                            <option value="25">25px</option>
+                                            <option value="26">26px</option>
+                                            <option value="27">27px</option>
+                                            <option value="28">28px</option>
+                                            <option value="29">29px</option>
+                                            <option value="30">30px</option>
+                                            <option value="31">31px</option>
+                                            <option value="32">32px</option>
+                                            <option value="33">33px</option>
+                                            <option value="34">34px</option>
+                                            <option value="35">35px</option>
+                                            <option value="36">36px</option>
+                                            <option value="37">37px</option>
+                                            <option value="38">38px</option>
+                                            <option value="39">39px</option>
+                                            <option value="40">40px</option>
+                                            <option value="41">41px</option>
+                                            <option value="42">42px</option>
+                                            <option value="43">43px</option>
+                                            <option value="44">44px</option>
+                                            <option value="45">45px</option>
+                                            <option value="46">46px</option>
+                                            <option value="47">47px</option>
+                                            <option value="48">48px</option>
+                                            <option value="49">49px</option>
+                                            <option value="50">50px</option>
+                                        </select>
                                     </div>
                                     <div class="field">
                                         <label>Mirror</label>
@@ -1673,225 +1902,478 @@
                             <a class="item" data-tab="scales/yaxes/ticks">Ticks</a>
                         </div>
                         <div class="ui bottom attached active tab segment" data-tab="scales/yaxes/general">
-                            <div class="ui form">
-                                <div class="fields">
-                                    <div class="field">
-                                        <label>Type</label>
-                                        <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].type">
-                                            <option value="category">Category</option>
-                                            <option value="linear">Linear</option>
-                                            <option value="logarithmic">Logarithmic</option>
-                                            <option value="time">Time</option>
-                                            <option value="radiolinear">RadioLinear</option>
-                                        </select>
-                                    </div>
-                                    <div class="field">
-                                        <label>Display</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].display">
-                                    </div>
-                                    <div class="field">
-                                        <label>Position</label>
-                                        <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].position">
-                                            <option value="top">Top</option>
-                                            <option value="bottom">Bottom</option>
-                                        </select>
-                                    </div>
+                        <div class="ui form">
+                            <div class="fields">
+                                <div class="field">
+                                    <label>Type</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].type">
+                                        <option value="category">Category</option>
+                                        <option value="linear">Linear</option>
+                                        <option value="logarithmic">Logarithmic</option>
+                                        <option value="time">Time</option>
+                                        <option value="radiolinear">RadioLinear</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Display</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].display">
+                                </div>
+                                <div class="field">
+                                    <label>Position</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].position">
+                                        <option value="left">Left</option>
+                                        <option value="right">Right</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <div class="ui bottom attached tab segment" data-tab="scales/yaxes/gridlines">
-                            <div class="ui form">
-                                <div class="fields">
-                                    <div class="field">
-                                        <label>Display</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.display">
-                                    </div>
-                                    <div class="field">
-                                        <label>Color</label>
-                                        <input type="color" v-model="chartdata.options.scales.yAxes[0].gridLines.color">
-                                    </div>
-                                    <div class="field">
-                                        <label>Line Width</label>
-                                        <input type="text" v-model="chartdata.options.scales.yAxes[0].gridLines.lineWidth">
-                                    </div>
-                                    <div class="field">
-                                        <label>Draw On Chart Area</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.drawOnChartArea">
-                                    </div>
-                                    <div class="field">
-                                        <label>Draw Ticks</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.drawTicks">
-                                    </div>
-                                    <!--<div class="field">-->
-                                    <!--<label>Tick Mark Length</label>-->
-                                    <!--<input type="text" v-model="chartdata.options.scales.yAxes[0].gridLines.tickMarkLength">-->
-                                    <!--</div>-->
-                                    <div class="field">
-                                        <label>Zero Line Width</label>
-                                        <input type="text" v-model="chartdata.options.scales.yAxes[0].gridLines.zeroLineWidth">
-                                    </div>
-                                    <div class="field">
-                                        <label>Zero Line Color</label>
-                                        <input type="color" v-model="chartdata.options.scales.yAxes[0].gridLines.zeroLineColor">
-                                    </div>
-                                    <div class="field">
-                                        <label>Offset Grid Lines</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.offsetGridLines">
-                                    </div>
+                        <div class="ui form">
+                            <div class="fields">
+                                <div class="field">
+                                    <label>Display</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.display">
+                                </div>
+                                <div class="field">
+                                    <label>Color</label>
+                                    <input type="color" v-model="chartdata.options.scales.yAxes[0].gridLines.color">
+                                </div>
+                                <div class="field">
+                                    <label>Line Width</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].gridLines.lineWidth" number>
+                                        <option value="1">1px</option>
+                                        <option value="2">2px</option>
+                                        <option value="3">3px</option>
+                                        <option value="4">4px</option>
+                                        <option value="5">5px</option>
+                                        <option value="6">6px</option>
+                                        <option value="7">7px</option>
+                                        <option value="8">8px</option>
+                                        <option value="9">9px</option>
+                                        <option value="10">10px</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Draw On Chart Area</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.drawOnChartArea">
+                                </div>
+                                <div class="field">
+                                    <label>Draw Ticks</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.drawTicks">
+                                </div>
+                                <div class="field">
+                                    <label>Tick Mark Length</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].gridLines.tickMarkLength" number>
+                                        <option value="1">1px</option>
+                                        <option value="2">2px</option>
+                                        <option value="3">3px</option>
+                                        <option value="4">4px</option>
+                                        <option value="5">5px</option>
+                                        <option value="6">6px</option>
+                                        <option value="7">7px</option>
+                                        <option value="8">8px</option>
+                                        <option value="9">9px</option>
+                                        <option value="10">10px</option>
+                                        <option value="11">11px</option>
+                                        <option value="12">12px</option>
+                                        <option value="13">13px</option>
+                                        <option value="14">14px</option>
+                                        <option value="15">15px</option>
+                                        <option value="16">16px</option>
+                                        <option value="17">17px</option>
+                                        <option value="18">18px</option>
+                                        <option value="19">19px</option>
+                                        <option value="20">20px</option>
+                                        <option value="21">22px</option>
+                                        <option value="23">23px</option>
+                                        <option value="24">24px</option>
+                                        <option value="25">25px</option>
+                                        <option value="26">26px</option>
+                                        <option value="27">27px</option>
+                                        <option value="28">28px</option>
+                                        <option value="29">29px</option>
+                                        <option value="30">30px</option>
+                                        <option value="31">31px</option>
+                                        <option value="32">32px</option>
+                                        <option value="33">33px</option>
+                                        <option value="34">34px</option>
+                                        <option value="35">35px</option>
+                                        <option value="36">36px</option>
+                                        <option value="37">37px</option>
+                                        <option value="38">38px</option>
+                                        <option value="39">39px</option>
+                                        <option value="40">40px</option>
+                                        <option value="41">41px</option>
+                                        <option value="42">42px</option>
+                                        <option value="43">43px</option>
+                                        <option value="44">44px</option>
+                                        <option value="45">45px</option>
+                                        <option value="46">46px</option>
+                                        <option value="47">47px</option>
+                                        <option value="48">48px</option>
+                                        <option value="49">49px</option>
+                                        <option value="50">50px</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Zero Line Width</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].gridLines.zeroLineWidth" number>
+                                        <option value="1">1px</option>
+                                        <option value="2">2px</option>
+                                        <option value="3">3px</option>
+                                        <option value="4">4px</option>
+                                        <option value="5">5px</option>
+                                        <option value="6">6px</option>
+                                        <option value="7">7px</option>
+                                        <option value="8">8px</option>
+                                        <option value="9">9px</option>
+                                        <option value="10">10px</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Zero Line Color</label>
+                                    <input type="color" v-model="chartdata.options.scales.yAxes[0].gridLines.zeroLineColor">
+                                </div>
+                                <div class="field">
+                                    <label>Offset Grid Lines</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].gridLines.offsetGridLines">
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <div class="ui bottom attached tab segment" data-tab="scales/yaxes/scalelabels">
-                            <div class="ui form">
-                                <div class="fields">
-                                    <div class="field">
-                                        <label>Display</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].scaleLabel.display">
-                                    </div>
-                                    <div class="field">
-                                        <label>Label String</label>
-                                        <input type="text" v-model="chartdata.options.scales.yAxes[0].scaleLabel.labelString">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Color</label>
-                                        <input type="color" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontColor">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Family</label>
-                                        <input type="text" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontFamily">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Size</label>
-                                        <input type="text" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontSize">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Style</label>
-                                        <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontStyle">
-                                            <option value="normal">Normal</option>
-                                            <option value="italic">Italic</option>
-                                            <option value="oblique">Oblique</option>
-                                            <option value="initial">Initial</option>
-                                            <option value="inherit">Inherit</option>
-                                        </select>
-                                    </div>
+                        <div class="ui form">
+                            <div class="fields">
+                                <div class="field">
+                                    <label>Display</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].scaleLabel.display">
+                                </div>
+                                <div class="field">
+                                    <label>Label String</label>
+                                    <input type="text" v-model="chartdata.options.scales.yAxes[0].scaleLabel.labelString">
+                                </div>
+                                <div class="field">
+                                    <label>Font Color</label>
+                                    <input type="color" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontColor">
+                                </div>
+                                <div class="field">
+                                    <label>Font Family</label>
+                                    <input type="text" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontFamily">
+                                </div>
+                                <div class="field">
+                                    <label>Font Size</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontSize" number>
+                                        <option value="1">1px</option>
+                                        <option value="2">2px</option>
+                                        <option value="3">3px</option>
+                                        <option value="4">4px</option>
+                                        <option value="5">5px</option>
+                                        <option value="6">6px</option>
+                                        <option value="7">7px</option>
+                                        <option value="8">8px</option>
+                                        <option value="9">9px</option>
+                                        <option value="10">10px</option>
+                                        <option value="11">11px</option>
+                                        <option value="12">12px</option>
+                                        <option value="13">13px</option>
+                                        <option value="14">14px</option>
+                                        <option value="15">15px</option>
+                                        <option value="16">16px</option>
+                                        <option value="17">17px</option>
+                                        <option value="18">18px</option>
+                                        <option value="19">19px</option>
+                                        <option value="20">20px</option>
+                                        <option value="21">22px</option>
+                                        <option value="23">23px</option>
+                                        <option value="24">24px</option>
+                                        <option value="25">25px</option>
+                                        <option value="26">26px</option>
+                                        <option value="27">27px</option>
+                                        <option value="28">28px</option>
+                                        <option value="29">29px</option>
+                                        <option value="30">30px</option>
+                                        <option value="31">31px</option>
+                                        <option value="32">32px</option>
+                                        <option value="33">33px</option>
+                                        <option value="34">34px</option>
+                                        <option value="35">35px</option>
+                                        <option value="36">36px</option>
+                                        <option value="37">37px</option>
+                                        <option value="38">38px</option>
+                                        <option value="39">39px</option>
+                                        <option value="40">40px</option>
+                                        <option value="41">41px</option>
+                                        <option value="42">42px</option>
+                                        <option value="43">43px</option>
+                                        <option value="44">44px</option>
+                                        <option value="45">45px</option>
+                                        <option value="46">46px</option>
+                                        <option value="47">47px</option>
+                                        <option value="48">48px</option>
+                                        <option value="49">49px</option>
+                                        <option value="50">50px</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Font Style</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].scaleLabel.fontStyle">
+                                        <option value="normal">Normal</option>
+                                        <option value="italic">Italic</option>
+                                        <option value="oblique">Oblique</option>
+                                        <option value="initial">Initial</option>
+                                        <option value="inherit">Inherit</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <div class="ui bottom attached tab segment" data-tab="scales/yaxes/ticks">
-                            <div class="ui form">
-                                <div class="fields">
-                                    <div class="field">
-                                        <label>Display</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.display">
-                                    </div>
-                                    <div class="field">
-                                        <label>Begin At Zero</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.beginAtZero">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Color</label>
-                                        <input type="color" v-model="chartdata.options.scales.yAxes[0].ticks.fontColor">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Family</label>
-                                        <input type="text" v-model="chartdata.options.scales.yAxes[0].ticks.fontFamily">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Size</label>
-                                        <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.fontSize">
-                                    </div>
-                                    <div class="field">
-                                        <label>Font Style</label>
-                                        <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].ticks.fontStyle">
-                                            <option value="normal">Normal</option>
-                                            <option value="italic">Italic</option>
-                                            <option value="oblique">Oblique</option>
-                                            <option value="initial">Initial</option>
-                                            <option value="inherit">Inherit</option>
-                                        </select>
-                                    </div>
-                                    <div class="field">
-                                        <label>Min Rotation</label>
-                                        <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.minRotation">
-                                    </div>
-                                    <div class="field">
-                                        <label>Max Rotation</label>
-                                        <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.maxRotation">
-                                    </div>
-                                    <div class="field">
-                                        <label>Max Ticks Limit</label>
-                                        <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.maxTicksLimit">
-                                    </div>
-                                    <div class="field">
-                                        <label>Padding</label>
-                                        <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.padding">
-                                    </div>
-                                    <div class="field">
-                                        <label>Mirror</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.mirror">
-                                    </div>
-                                    <div class="field">
-                                        <label>Reverse</label>
-                                        <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.reverse">
-                                    </div>
+                        <div class="ui form">
+                            <div class="fields">
+                                <div class="field">
+                                    <label>Display</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.display">
+                                </div>
+                                <div class="field">
+                                    <label>Begin At Zero</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.beginAtZero">
+                                </div>
+                                <div class="field">
+                                    <label>Font Color</label>
+                                    <input type="color" v-model="chartdata.options.scales.yAxes[0].ticks.fontColor">
+                                </div>
+                                <div class="field">
+                                    <label>Font Family</label>
+                                    <input type="text" value="Helvetica Neue" v-model="chartdata.options.scales.yAxes[0].ticks.fontFamily">
+                                </div>
+                                <div class="field">
+                                    <label>Font Size</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].ticks.fontSize" number>
+                                        <option value="1">1px</option>
+                                        <option value="2">2px</option>
+                                        <option value="3">3px</option>
+                                        <option value="4">4px</option>
+                                        <option value="5">5px</option>
+                                        <option value="6">6px</option>
+                                        <option value="7">7px</option>
+                                        <option value="8">8px</option>
+                                        <option value="9">9px</option>
+                                        <option value="10">10px</option>
+                                        <option value="11">11px</option>
+                                        <option value="12">12px</option>
+                                        <option value="13">13px</option>
+                                        <option value="14">14px</option>
+                                        <option value="15">15px</option>
+                                        <option value="16">16px</option>
+                                        <option value="17">17px</option>
+                                        <option value="18">18px</option>
+                                        <option value="19">19px</option>
+                                        <option value="20">20px</option>
+                                        <option value="21">22px</option>
+                                        <option value="23">23px</option>
+                                        <option value="24">24px</option>
+                                        <option value="25">25px</option>
+                                        <option value="26">26px</option>
+                                        <option value="27">27px</option>
+                                        <option value="28">28px</option>
+                                        <option value="29">29px</option>
+                                        <option value="30">30px</option>
+                                        <option value="31">31px</option>
+                                        <option value="32">32px</option>
+                                        <option value="33">33px</option>
+                                        <option value="34">34px</option>
+                                        <option value="35">35px</option>
+                                        <option value="36">36px</option>
+                                        <option value="37">37px</option>
+                                        <option value="38">38px</option>
+                                        <option value="39">39px</option>
+                                        <option value="40">40px</option>
+                                        <option value="41">41px</option>
+                                        <option value="42">42px</option>
+                                        <option value="43">43px</option>
+                                        <option value="44">44px</option>
+                                        <option value="45">45px</option>
+                                        <option value="46">46px</option>
+                                        <option value="47">47px</option>
+                                        <option value="48">48px</option>
+                                        <option value="49">49px</option>
+                                        <option value="50">50px</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Font Style</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].ticks.fontStyle">
+                                        <option value="normal">Normal</option>
+                                        <option value="italic">Italic</option>
+                                        <option value="oblique">Oblique</option>
+                                        <option value="initial">Initial</option>
+                                        <option value="inherit">Inherit</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Min Rotation</label>
+                                    <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.minRotation">
+                                </div>
+                                <div class="field">
+                                    <label>Max Rotation</label>
+                                    <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.maxRotation">
+                                </div>
+                                <div class="field">
+                                    <label>Max Ticks Limit</label>
+                                    <input type="number" v-model="chartdata.options.scales.yAxes[0].ticks.maxTicksLimit">
+                                </div>
+                                <div class="field">
+                                    <label>Padding</label>
+                                    <select class="ui dropdown" v-model="chartdata.options.scales.yAxes[0].ticks.padding" number>
+                                        <option value="1">1px</option>
+                                        <option value="2">2px</option>
+                                        <option value="3">3px</option>
+                                        <option value="4">4px</option>
+                                        <option value="5">5px</option>
+                                        <option value="6">6px</option>
+                                        <option value="7">7px</option>
+                                        <option value="8">8px</option>
+                                        <option value="9">9px</option>
+                                        <option value="10">10px</option>
+                                        <option value="11">11px</option>
+                                        <option value="12">12px</option>
+                                        <option value="13">13px</option>
+                                        <option value="14">14px</option>
+                                        <option value="15">15px</option>
+                                        <option value="16">16px</option>
+                                        <option value="17">17px</option>
+                                        <option value="18">18px</option>
+                                        <option value="19">19px</option>
+                                        <option value="20">20px</option>
+                                        <option value="21">22px</option>
+                                        <option value="23">23px</option>
+                                        <option value="24">24px</option>
+                                        <option value="25">25px</option>
+                                        <option value="26">26px</option>
+                                        <option value="27">27px</option>
+                                        <option value="28">28px</option>
+                                        <option value="29">29px</option>
+                                        <option value="30">30px</option>
+                                        <option value="31">31px</option>
+                                        <option value="32">32px</option>
+                                        <option value="33">33px</option>
+                                        <option value="34">34px</option>
+                                        <option value="35">35px</option>
+                                        <option value="36">36px</option>
+                                        <option value="37">37px</option>
+                                        <option value="38">38px</option>
+                                        <option value="39">39px</option>
+                                        <option value="40">40px</option>
+                                        <option value="41">41px</option>
+                                        <option value="42">42px</option>
+                                        <option value="43">43px</option>
+                                        <option value="44">44px</option>
+                                        <option value="45">45px</option>
+                                        <option value="46">46px</option>
+                                        <option value="47">47px</option>
+                                        <option value="48">48px</option>
+                                        <option value="49">49px</option>
+                                        <option value="50">50px</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label>Mirror</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.mirror">
+                                </div>
+                                <div class="field">
+                                    <label>Reverse</label>
+                                    <input type="checkbox" v-model="chartdata.options.scales.yAxes[0].ticks.reverse">
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <!-- Scales Ends -->
             </div>
         </div>
+        <!--<div class="title">-->
+            <!--<i class="dropdown icon"></i>-->
+            <!--<i class="setting icon"></i>Chart Specific Options-->
+        <!--</div>-->
+        <!--<div class="content">-->
+            <!--<div>-->
+                <!--<div class="ui top attached tabular menu">-->
+                    <!--<a class="active item" data-tab="bar">Bar</a>-->
+                    <!--<a class="item" data-tab="line">Line</a>-->
+                    <!--<a class="item" data-tab="radar">Radar</a>-->
+                <!--</div>-->
+                <!--<div class="ui bottom attached active tab segment" data-tab="bar">-->
+                    <!--Bar-->
+                <!--</div>-->
+                <!--<div class="ui bottom attached tab segment" data-tab="line">-->
+                    <!--Line-->
+                <!--</div>-->
+                <!--<div class="ui bottom attached tab segment" data-tab="radar">-->
+                    <!--Radar-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 
 <template id="datasets">
     <div class="ui segment">
-        <div class="ui form">
-            <div class="fields">
-                <div class="field">
-                    <label>Category</label>
-                    <input v-model="dataset.label" type="text">
-                </div>
-                <div class="field">
-                    <label>Bacground Color</label>
-                    <input v-model="dataset.backgroundColor" type="color">
-                </div>
-                <div class="field">
-                    <label>Border Color</label>
-                    <input v-model="dataset.borderColor" type="color">
-                </div>
-                <div class="field">
-                    <label>Border Width</label>
-                    <select class="ui dropdown" v-model="dataset.borderWidth">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-                <div class="field">
-                    <label>Fill</label>
-                    <input type="checkbox" v-model="dataset.fill">
-                </div>
-                <div class="field">
-                    <span @click="removeDataset(dataset)"><i class="remove icon"></i></span>
+
+        <div class="ui top attached tabular menu">
+            <a class="active item" data-tab="data{{index}}">Data</a>
+            <a class="item" data-tab="options{{index}}">Options</a>
+            <a class="item" @click="removeDataset(dataset)"><i class="remove icon"></i></a>
+        </div>
+        <div class="ui bottom attached active tab segment" data-tab="data{{index}}">
+            <div class="ui form">
+                <div class="fields">
+                    <div class="ui icon input field" v-for="data in dataset.data" track-by="$index">
+                        <input @keyup.enter="addData(dataset)" v-model="data" type="text">
+                        <i class="delete link icon" @click="removeData(dataset, data)"></i>
+                    </div>
+                    <div class="field">
+                        <button class="ui button" @click="addData(dataset)">+data</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="fields">
-            <div class="ui icon input field" v-for="data in dataset.data" track-by="$index">
-                <input v-model="data" type="text">
-                <i class="delete link icon" @click="removeData(dataset, data)"></i>
-            </div>
-            <div class="field">
-                <button class="ui button" @click="addData(dataset)">+data</button>
+        <div class="ui bottom attached tab segment" data-tab="options{{index}}">
+            <div class="ui form">
+                <div class="fields">
+                    <div class="field">
+                        <label>Category</label>
+                        <input v-model="dataset.label" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Bacground Color</label>
+                        <input v-model="dataset.backgroundColor" type="color">
+                    </div>
+                    <div class="field">
+                        <label>Border Color</label>
+                        <input v-model="dataset.borderColor" type="color">
+                    </div>
+                    <div class="field">
+                        <label>Border Width</label>
+                        <select class="ui dropdown" v-model="dataset.borderWidth">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Fill</label>
+                        <input type="checkbox" v-model="dataset.fill">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
