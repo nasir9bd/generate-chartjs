@@ -71,6 +71,17 @@ Vue.component('graph', {
                 fill: true,
                 data: []
             });
+        },
+        resetChart: function() {
+            localStorage.clear();
+            location.reload();
+        },
+        setExample1: function() {
+            this.chartdata.type = 'bar';
+            this.chartdata.data.labels = ["July", "August", "September", "October", "November", "December"];
+            this.chartdata.data.datasets = [{"label": "2014", "backgroundColor": "#aaadff", "fill": true, "data": ["230", "250", "260", "240", "280", "270"], "borderColor": "#ffffff", "borderWidth": "1"}, {"label": "2015", "backgroundColor": "#407aaa", "fill": true, "data": ["200", "300", "280", "270", "300", "295"]}];
+            this.chartdata.options = {"title": {"display": true, "text": "Ad Revenue Comparison 2014-2015", "position": "bottom", "fullWidth": true, "fontColor": "#aa7942", "fontSize": 16}, "legend": {"display": true, "fullWidth": true, "position": "top"}, "scales": {"yAxes": [{"ticks": {"beginAtZero": true, "display": true}, "gridLines": {"display": true, "lineWidth": 2, "drawOnChartArea": true, "drawTicks": true, "tickMarkLength": 1, "offsetGridLines": true, "zeroLineColor": "#942192", "color": "#d6d6d6", "zeroLineWidth": 2}, "scaleLabel": {"display": true, "labelString": "USD in Millions"}, "display": true}], "xAxes": {"0": {"ticks": {"display": true, "fontSize": 14, "fontStyle": "italic"}, "display": true, "gridLines": {"display": true, "lineWidth": 2, "drawOnChartArea": false, "drawTicks": true, "tickMarkLength": 12, "zeroLineWidth": 2, "offsetGridLines": true, "color": "#942192", "zeroLineColor": "#942192"}, "scaleLabel": {"fontSize": 16, "display": true, "fontStyle": "normal"}}}},"tooltips": {"enabled": true, "mode": "label", "caretSize": 10, "backgroundColor": "#00fa92"}};
+            this.drawChart();
         }
     },
     ready: function() {
@@ -81,7 +92,7 @@ Vue.component('graph', {
 
 Vue.component('dataset', {
     template: '#datasets',
-    props: ['dataset', 'index'],
+    props: ['dataset', 'index', 'type'],
     methods: {
         addData: function (dataset){
             dataset.data.push('');
@@ -106,10 +117,9 @@ var vm = new Vue({
              type: type,
              data: data,
              options: options
-        }
-    },
-
-
+        },
+        showCode: false
+    }
 });
 
 $('.ui.accordion').accordion();

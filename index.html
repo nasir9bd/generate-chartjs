@@ -5,21 +5,63 @@
     <title>Chartjs Generator</title>
 
     <link href="assets/css/semantic.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/prettify.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     <style>
-
+        body {
+            height: 1054px;
+        }
     </style>
 </head>
 <body>
-
+<div class="ui container nav-bar">
+    <!--<div class="ui secondary pointing menu">-->
+        <!--<a class="item active">-->
+            <!--Home-->
+        <!--</a>-->
+    <!--</div>-->
+</div>
 <div class="ui container">
     <graph :chartdata="chartData"></graph>
 </div>
 <!--{{chartData | json}}-->
 
+<div class="ui form container">
+    <button class="ui secondary button" @click="showCode = !showCode">Use This Chart</button>
+</div>
+
+<div v-if="showCode" class="ui segment container">
+    <p>1. First Attach Chartjs library to script area</p>
+    <div class="ui segment">
+        <pre class="prettyprint">
+            &lt;script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"&gt;&lt;/script&gt;
+        </pre>
+    </div>
+    <p>2. Add canvas tag to html area</p>
+    <div class="ui segment">
+        <pre class="prettyprint">
+            &lt;canvas id="myChart" width="400" height="400"&gt;&lt;/canvas>
+        </pre>
+    </div>
+    <p>3. Copy the javascript code to your script js file</p>
+    <div class="ui segment">
+        <pre class="prettyprint">
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var data = {{chartData.data | json}};
+            var options = {{chartData.options | json}};
+
+            var myChart = new Chart(ctx, {
+                type: '{{chartData.type}}',
+                data: data,
+                options: options
+            });
+        </pre>
+    </div>
+</div>
+
 <template id="parent-template">
     <div>
-        <div style="width:900px;margin:0 auto">
+        <div style="width:900px;margin:0 auto 40px auto">
             <canvas width="600" height="400" v-el:graph></canvas>
         </div>
     </div>
@@ -27,10 +69,16 @@
 
     <div class="ui form">
         <div class="inline fields">
-            <div class="twelve wide field">
+            <div class="seven wide field">
 
             </div>
             <div class="two wide field">
+                <button @click="setExample1" class="ui green basic button">Example 1</button>
+            </div>
+            <div class="two wide field">
+                <button @click="resetChart" class="ui button">Reset</button>
+            </div>
+            <div class="three wide field">
                 <label>Chart Type</label>
                 <select class="ui dropdown" v-model="chartdata.type">
                     <option value="bar">Bar</option>
@@ -51,7 +99,7 @@
     <div class="ui accordion">
         <div class="title active">
             <i class="dropdown icon"></i>
-            <i class="tag icon"></i>Labels
+            <i class="tag large icon"></i>Labels
         </div>
         <div class="content active">
             <div class="ui form">
@@ -68,11 +116,11 @@
         </div>
         <div class="title">
             <i class="dropdown icon"></i>
-            <i class="database icon"></i>Datasets
+            <i class="database large icon"></i>Datasets
         </div>
         <div class="content">
             <div class="ui form">
-                <dataset v-for="dataset in chartdata.data.datasets" :index="$index" :dataset.sync="dataset" track-by="$index"></dataset>
+                <dataset v-for="dataset in chartdata.data.datasets" :type="chartdata.type" :index="$index" :dataset.sync="dataset" track-by="$index"></dataset>
 
                 <button class="ui button" @click="addDataset"><i class="database icon"></i>Add</button>
                 <br>
@@ -80,7 +128,7 @@
         </div>
         <div class="title">
             <i class="dropdown icon"></i>
-            <i class="settings icon"></i>Global Options
+            <i class="settings large icon"></i>Global Options
         </div>
         <div class="content" style="min-height: 300px">
             <div>
@@ -177,7 +225,7 @@
                                 </div>
                                 <div class="one field">
                                     <label>Font Family</label>
-                                    <input type="text" value="Helvetica Neue"  v-model="chartdata.options.title.fontFamily">
+                                    <input type="text"  v-model="chartdata.options.title.fontFamily">
                                 </div>
                                 <div class="one field">
                                     <label>Font Size</label>
@@ -439,7 +487,7 @@
                                 </div>
                                 <div class="field">
                                     <label>Font Family</label>
-                                    <input type="text" value="Helvetica Neue" v-model="chartdata.options.legend.labels.fontFamily">
+                                    <input type="text" v-model="chartdata.options.legend.labels.fontFamily">
                                 </div>
                                 <div class="field">
                                     <label>Padding</label>
@@ -726,7 +774,7 @@
                             <div class="fields">
                                 <div class="field">
                                     <label>Font Family</label>
-                                    <input type="text" value="Helvetica Neue" v-model="chartdata.options.tooltips.titleFontFamily">
+                                    <input type="text" v-model="chartdata.options.tooltips.titleFontFamily">
                                 </div>
                                 <div class="field">
                                     <label>Font Size</label>
@@ -864,7 +912,7 @@
                             <div class="fields">
                                 <div class="field">
                                     <label>Font Family</label>
-                                    <input type="text" value="Helvetica Neue" v-model="chartdata.options.tooltips.bodyFontFamily">
+                                    <input type="text" v-model="chartdata.options.tooltips.bodyFontFamily">
                                 </div>
                                 <div class="field">
                                     <label>Font Size</label>
@@ -997,7 +1045,7 @@
                             <div class="fields">
                                 <div class="field">
                                     <label>Font Family</label>
-                                    <input type="text" value="Helvetica Neue" v-model="chartdata.options.tooltips.footerFontFamily">
+                                    <input type="text" v-model="chartdata.options.tooltips.footerFontFamily">
                                 </div>
                                 <div class="field">
                                     <label>Font Size</label>
@@ -1750,7 +1798,7 @@
                                     </div>
                                     <div class="field">
                                         <label>Font Family</label>
-                                        <input type="text" value="Helvetica Neue" v-model="chartdata.options.scales.xAxes[0].ticks.fontFamily">
+                                        <input type="text" v-model="chartdata.options.scales.xAxes[0].ticks.fontFamily">
                                     </div>
                                     <div class="field">
                                         <label>Font Size</label>
@@ -2145,7 +2193,7 @@
                                 </div>
                                 <div class="field">
                                     <label>Font Family</label>
-                                    <input type="text" value="Helvetica Neue" v-model="chartdata.options.scales.yAxes[0].ticks.fontFamily">
+                                    <input type="text" v-model="chartdata.options.scales.yAxes[0].ticks.fontFamily">
                                 </div>
                                 <div class="field">
                                     <label>Font Size</label>
@@ -2324,7 +2372,7 @@
         <div class="ui top attached tabular menu">
             <a class="active item" data-tab="data{{index}}">Data</a>
             <a class="item" data-tab="options{{index}}">Options</a>
-            <a class="item" @click="removeDataset(dataset)"><i class="remove icon"></i></a>
+            <a class="item" title="Remove Dataset" @click="removeDataset(dataset)"><i class="trash large icon"></i></a>
         </div>
         <div class="ui bottom attached active tab segment" data-tab="data{{index}}">
             <div class="ui form">
@@ -2369,7 +2417,7 @@
                             <option value="10">10</option>
                         </select>
                     </div>
-                    <div class="field">
+                    <div class="field" v-if="'line' == this.type">
                         <label>Fill</label>
                         <input type="checkbox" v-model="dataset.fill">
                     </div>
@@ -2383,6 +2431,7 @@
 <script src="assets/js/chart.min.js"></script>
 <script src="assets/js/semantic.js"></script>
 <script src="assets/js/vue.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
 <script src="assets/js/script.js"></script>
 </body>
 </html>

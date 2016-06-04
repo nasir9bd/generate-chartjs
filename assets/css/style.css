@@ -14,3 +14,11 @@ body, .ui.vertical.divider {
   left: 10px;
   top: 10px;
 }
+
+.snippet {
+  background-color: #f5f5f5;
+}
+
+.nav-bar {
+  margin-bottom: 30px;
+}
