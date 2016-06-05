@@ -110,6 +110,10 @@ Vue.component('dataset', {
     }
 });
 
+Vue.directive( 'highlightjs', function () {
+        hljs.highlightBlock(this.el);
+});
+
 var vm = new Vue({
     el: 'body',
     data: {
@@ -119,6 +123,18 @@ var vm = new Vue({
              options: options
         },
         showCode: false
+    },
+    methods: {
+        showDetailedCode: function() {
+            this.showCode = true;
+
+        }
+    },
+    attached: function() {
+        console.log(this.$el);
+        jQuery('code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
     }
 });
 

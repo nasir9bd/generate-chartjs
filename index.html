@@ -5,7 +5,8 @@
     <title>Chartjs Generator</title>
 
     <link href="assets/css/semantic.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/prettify.css" rel="stylesheet" type="text/css" />
+    <!--<link href="assets/css/prettify.css" rel="stylesheet" type="text/css" />-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     <style>
         body {
@@ -27,25 +28,25 @@
 <!--{{chartData | json}}-->
 
 <div class="ui form container">
-    <button class="ui secondary button" @click="showCode = !showCode">Use This Chart</button>
+    <button class="ui secondary button" @click="showDetailedCode">Use This Chart</button>
 </div>
 
-<div v-if="showCode" class="ui segment container">
+<div class="ui segment container">
     <p>1. First Attach Chartjs library to script area</p>
     <div class="ui segment">
-        <pre class="prettyprint">
+        <code  v-highlightjs>
             &lt;script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"&gt;&lt;/script&gt;
-        </pre>
+        </code>
     </div>
     <p>2. Add canvas tag to html area</p>
     <div class="ui segment">
-        <pre class="prettyprint">
+        <code  v-highlightjs>
             &lt;canvas id="myChart" width="400" height="400"&gt;&lt;/canvas>
-        </pre>
+        </code>
     </div>
     <p>3. Copy the javascript code to your script js file</p>
     <div class="ui segment">
-        <pre class="prettyprint">
+        <code v-el="thirdSnippet">
             var ctx = document.getElementById('myChart').getContext('2d');
             var data = {{chartData.data | json}};
             var options = {{chartData.options | json}};
@@ -55,7 +56,7 @@
                 data: data,
                 options: options
             });
-        </pre>
+        </code>
     </div>
 </div>
 
@@ -2430,8 +2431,9 @@
 <script src="assets/js/jquery-1.12.3.js"></script>
 <script src="assets/js/chart.min.js"></script>
 <script src="assets/js/semantic.js"></script>
+<script src="assets/js/prettify.js"></script>
 <script src="assets/js/vue.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
 <script src="assets/js/script.js"></script>
 </body>
 </html>
