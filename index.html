@@ -5,8 +5,6 @@
     <title>Chartjs Generator</title>
 
     <link href="assets/css/semantic.css" rel="stylesheet" type="text/css" />
-    <!--<link href="assets/css/prettify.css" rel="stylesheet" type="text/css" />-->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     <style>
         body {
@@ -14,7 +12,7 @@
         }
     </style>
 </head>
-<body>
+<body v-cloak>
 <div class="ui container nav-bar">
     <!--<div class="ui secondary pointing menu">-->
         <!--<a class="item active">-->
@@ -27,36 +25,38 @@
 </div>
 <!--{{chartData | json}}-->
 
-<div class="ui form container">
-    <button class="ui secondary button" @click="showDetailedCode">Use This Chart</button>
+<div class="ui form container" style="margin-top:30px;">
+    <button class="ui secondary button" @click="showCode = !showCode">Use This Chart</button>
 </div>
 
-<div class="ui segment container">
+<div v-if="showCode" class="ui segment container">
     <p>1. First Attach Chartjs library to script area</p>
     <div class="ui segment">
-        <code  v-highlightjs>
+        <code>
             &lt;script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"&gt;&lt;/script&gt;
         </code>
     </div>
     <p>2. Add canvas tag to html area</p>
     <div class="ui segment">
-        <code  v-highlightjs>
+        <code>
             &lt;canvas id="myChart" width="400" height="400"&gt;&lt;/canvas>
         </code>
     </div>
-    <p>3. Copy the javascript code to your script js file</p>
+    <p>3. Copy the javascript code to your script js file, test the chart and then change labels and data with your original label and data.</p>
     <div class="ui segment">
-        <code v-el="thirdSnippet">
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var data = {{chartData.data | json}};
-            var options = {{chartData.options | json}};
+<pre>
+<code v-el="thirdSnippet">
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var data = {{chartData.data | json}};
+    var options = {{chartData.options | json}};
 
-            var myChart = new Chart(ctx, {
-                type: '{{chartData.type}}',
-                data: data,
-                options: options
-            });
-        </code>
+    var myChart = new Chart(ctx, {
+        type: '{{chartData.type}}',
+        data: data,
+        options: options
+    });
+</code>
+</pre>
     </div>
 </div>
 
@@ -70,11 +70,14 @@
 
     <div class="ui form">
         <div class="inline fields">
-            <div class="seven wide field">
+            <div class="five wide field">
 
             </div>
             <div class="two wide field">
                 <button @click="setExample1" class="ui green basic button">Example 1</button>
+            </div>
+            <div class="two wide field">
+                <button @click="setExample2" class="ui green basic button">Example 2</button>
             </div>
             <div class="two wide field">
                 <button @click="resetChart" class="ui button">Reset</button>
@@ -131,7 +134,7 @@
             <i class="dropdown icon"></i>
             <i class="settings large icon"></i>Global Options
         </div>
-        <div class="content" style="min-height: 300px">
+        <div class="content">
             <div>
                 <div class="ui top attached tabular menu">
                     <!--<a class="item active" data-tab="defaults">Defaults</a>-->
@@ -1327,7 +1330,8 @@
                             <div class="fields">
                                 <div class="field">
                                     <label>Line Tension</label>
-                                    <input type="color" v-model="chartdata.options.elements.line.lineTension">
+                                    <input type="text" v-model="chartdata.options.elements.line.lineTension" number>
+
                                 </div>
                                 <div class="field">
                                     <label>Background Color</label>
@@ -2422,6 +2426,68 @@
                         <label>Fill</label>
                         <input type="checkbox" v-model="dataset.fill">
                     </div>
+                    <div class="field" v-if="'line' == this.type">
+                        <label>Point Background</label>
+                        <input type="color" v-model="dataset.pointBackgroundColor">
+                    </div>
+                    <div class="field" v-if="'line' == this.type">
+                        <label>Point Border</label>
+                        <input type="color" v-model="dataset.pointBorderColor">
+                    </div>
+                    <div class="field" v-if="'line' == this.type">
+                        <label>Point Hover Background</label>
+                        <input type="color" v-model="dataset.pointHoverBackgroundColor">
+                    </div>
+                    <div class="field" v-if="'line' == this.type">
+                        <label>Point Hover Border</label>
+                        <input type="color" v-model="dataset.pointHoverBorderColor">
+                    </div>
+                    <div class="field" v-if="'line' == this.type">
+                        <label>Point Radius</label>
+                        <select class="ui dropdown" v-model="dataset.pointRadius" number>
+                            <option value="0">0px</option>
+                            <option value="1">1px</option>
+                            <option value="2">2px</option>
+                            <option value="3">3px</option>
+                            <option value="4">4px</option>
+                            <option value="5">5px</option>
+                            <option value="6">6px</option>
+                            <option value="7">7px</option>
+                            <option value="8">8px</option>
+                            <option value="9">9px</option>
+                            <option value="10">10px</option>
+                            <option value="11">11px</option>
+                            <option value="12">12px</option>
+                            <option value="13">13px</option>
+                            <option value="14">14px</option>
+                            <option value="15">15px</option>
+                        </select>
+                    </div>
+                    <div class="field" v-if="'line' == this.type">
+                        <label>Point Border Width</label>
+                        <select class="ui dropdown" v-model="dataset.pointBorderWidth" number>
+                            <option value="0">0px</option>
+                            <option value="1">1px</option>
+                            <option value="2">2px</option>
+                            <option value="3">3px</option>
+                            <option value="4">4px</option>
+                            <option value="5">5px</option>
+                            <option value="6">6px</option>
+                            <option value="7">7px</option>
+                            <option value="8">8px</option>
+                            <option value="9">9px</option>
+                            <option value="10">10px</option>
+                            <option value="11">11px</option>
+                            <option value="12">12px</option>
+                            <option value="13">13px</option>
+                            <option value="14">14px</option>
+                            <option value="15">15px</option>
+                        </select>
+                    </div>
+                    <div class="field" v-if="'line' == this.type">
+                        <label>Line Tension</label>
+                        <input type="text" v-model="dataset.lineTension" number>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2431,9 +2497,7 @@
 <script src="assets/js/jquery-1.12.3.js"></script>
 <script src="assets/js/chart.min.js"></script>
 <script src="assets/js/semantic.js"></script>
-<script src="assets/js/prettify.js"></script>
 <script src="assets/js/vue.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
 <script src="assets/js/script.js"></script>
 </body>
 </html>

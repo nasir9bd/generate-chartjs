@@ -22,3 +22,7 @@ body, .ui.vertical.divider {
 .nav-bar {
   margin-bottom: 30px;
 }
+
+[v-cloak] {
+  display: none;
+}
