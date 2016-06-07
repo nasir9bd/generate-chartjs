@@ -118,10 +118,6 @@
         }
     });
 
-    Vue.directive( 'highlightjs', function () {
-        hljs.highlightBlock(this.el);
-    });
-
     var vm = new Vue({
         el: 'body',
         data: {
